@@ -42,6 +42,11 @@
   Otherwise, display org-roam buffers after any other visible default
   source")
 
+(defcustom consult-org-roam-buffer-auto-setup t
+  "If non-nil, automatically add org-roam-buffer-source to consult-buffer-sources
+  and modify standard consult--source-buffer to not display org-raom buffers.
+  Otherwise, do nothing automatically")
+
 ;; ============================================================================
 ;;;; Functions
 ;; ============================================================================
@@ -159,17 +164,18 @@ title of an open org-roam buffer."
     (add-to-list 'consult-buffer-sources 'org-roam-buffer-source 'append)))
 
 (eval-after-load
-;; Customize consult--source-buffer to show org-roam buffers only in
-;; their dedicated section
-(consult-customize
-  consult--source-buffer
-  :items (lambda ()
-           (consult--buffer-query
-             :sort 'visibility
-             :as #'buffer-name
-             :predicate (lambda (buf) (not (org-roam-buffer-p buf))))))
+    (when consult-org-roam-buffer-auto-setup
+      ;; Customize consult--source-buffer to show org-roam buffers only in
+      ;; their dedicated section
+      (consult-customize
+       consult--source-buffer
+       :items (lambda ()
+                (consult--buffer-query
+                 :sort 'visibility
+                 :as #'buffer-name
+                 :predicate (lambda (buf) (not (org-roam-buffer-p buf))))))
 
-  (consult-org-roam-buffer-setup))
+      (consult-org-roam-buffer-setup)))
 
 (provide 'consult-org-roam-buffer)
 ;;; consult-org-roam-buffer.el ends here

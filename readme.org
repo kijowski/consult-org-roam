@@ -44,7 +44,9 @@ functions. This can be done by adding using
 =consult-org-roam-buffer.el= adds a new source to =consult-buffer= for
 narrowing the selection to the currently open org-roam buffers. The
 predefined narrow-key is =n= (for notes) but could be conveniently
-customized via =consult-org-roam-buffer-narrow-key=.
+customized via =consult-org-roam-buffer-narrow-key=. You can also disable
+automatic setup by setting =consult-org-roam-buffer-auto-setup=
+to =nil= - in that case you need to add =org-roam-buffer-source= yourself.
 
 * Installation
 You can install it from Melpa. If you are using =use-package=, the following
@@ -66,6 +68,8 @@ snippet might serve as a viable starting point:
    ;; Display org-roam buffers right after non-org-roam buffers
    ;; in consult-buffer (and not down at the bottom)
    (consult-org-roam-buffer-after-buffers t)
+   ;; Enable automatic setup
+   (consult-org-roam-buffer-auto-setup t)
    :config
    ;; Eventually suppress previewing for certain functions
    (consult-customize
